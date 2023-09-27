@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Enregistreur vocal</string>
+    <string name="son">-------------TITRE ---------------</string>
 </resources>
