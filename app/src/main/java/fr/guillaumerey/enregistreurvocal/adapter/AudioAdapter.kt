@@ -1,4 +1,35 @@
 package fr.guillaumerey.enregistreurvocal.adapter
 
-class AudioAdapter {
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import fr.guillaumerey.enregistreurvocal.R
+
+class AudioAdapter : RecyclerView.Adapter<AudioAdapter.AudioHolder>() {
+
+    class AudioHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+        val titre: TextView = itemView.findViewById(R.id.titre)
+        val dure : TextView = itemView.findViewById(R.id.dure)
+        val date : TextView = itemView.findViewById(R.id.date)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AudioHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_sound, parent, false)
+        return AudioHolder(view)
+    }
+
+    override fun getItemCount(): Int {
+        return 10
+    }
+
+    override fun onBindViewHolder(holder: AudioHolder, position: Int) {
+        holder.titre.text = "GuiGui danse !!"
+        holder.dure.text ="25-30"
+        holder.date.text = "27/09/2023"
+    }
+
+
 }
