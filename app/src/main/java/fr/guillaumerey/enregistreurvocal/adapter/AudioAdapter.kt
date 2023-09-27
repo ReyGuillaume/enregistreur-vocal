@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import fr.guillaumerey.enregistreurvocal.R
 
 class AudioAdapter : RecyclerView.Adapter<AudioAdapter.AudioHolder>() {
@@ -17,7 +16,7 @@ class AudioAdapter : RecyclerView.Adapter<AudioAdapter.AudioHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AudioHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_sound, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_sound, parent,false)
         return AudioHolder(view)
     }
 
