@@ -9,6 +9,7 @@ import fr.guillaumerey.enregistreurvocal.adapter.AudioAdapter
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
         val list: RecyclerView = findViewById(R.id.audio_list)
         list.adapter = AudioAdapter()
     }
