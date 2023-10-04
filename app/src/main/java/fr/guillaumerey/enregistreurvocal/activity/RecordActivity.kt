@@ -22,9 +22,12 @@ class RecordActivity : AppCompatActivity() {
         var allPermissions = true
 
         for (permission in permissions) {
-            Log.d("permission",permission)
+            Log.d("permission",ContextCompat.checkSelfPermission(this, permission).toString())
+            Log.d("permission2",PackageManager.PERMISSION_GRANTED.toString())
             if ((ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED)) {
+                Log.d("test","coucou")
                 if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
+                    Log.d("test2","bonjour")
                     ActivityCompat.requestPermissions(this, permissions, 0)
                 }
                 allPermissions = false
@@ -57,12 +60,15 @@ class RecordActivity : AppCompatActivity() {
 
         val permissions = arrayOf(
             android.Manifest.permission.RECORD_AUDIO,
-            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+            //android.Manifest.permission.WRITE_EXTERNAL_STORAGE
         )
 
         startRec.setOnClickListener {
-            if(checkPermission(permissions))
+            if(checkPermission(permissions)){
                 startRecording()
+            }
+
+
         }
 
         pauseRec.setOnClickListener {
@@ -77,7 +83,6 @@ class RecordActivity : AppCompatActivity() {
 
     private fun startRecording() {
         try {
-            //Log.d()
             Toast.makeText(this, "Recording go!", Toast.LENGTH_SHORT).show()
             mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC)
             mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
