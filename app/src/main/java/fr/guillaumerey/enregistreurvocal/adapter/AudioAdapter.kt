@@ -21,7 +21,7 @@ class AudioAdapter : RecyclerView.Adapter<AudioAdapter.AudioHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return 10
+        return 20
     }
 
     override fun onBindViewHolder(holder: AudioHolder, position: Int) {
