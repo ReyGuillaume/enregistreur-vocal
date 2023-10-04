@@ -6,6 +6,7 @@ import android.media.MediaRecorder
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -19,13 +20,16 @@ class RecordActivity : AppCompatActivity() {
 
     private fun checkPermission(permissions: Array<String>): Boolean {
         var allPermissions = true
+
         for (permission in permissions) {
-            allPermissions = allPermissions && (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED)
+            Log.d("permission",permission)
+            if ((ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED)) {
+                if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
+                    ActivityCompat.requestPermissions(this, permissions, 0)
+                }
+                allPermissions = false
+            }
         }
-        if (!allPermissions)
-            ActivityCompat.requestPermissions(this, permissions, 0)
-        //if(res) Toast.makeText(this, "True", Toast.LENGTH_SHORT).show()
-        //else Toast.makeText(this, "False", Toast.LENGTH_SHORT).show()
         return allPermissions
     }
 
@@ -73,6 +77,7 @@ class RecordActivity : AppCompatActivity() {
 
     private fun startRecording() {
         try {
+            //Log.d()
             Toast.makeText(this, "Recording go!", Toast.LENGTH_SHORT).show()
             mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC)
             mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
