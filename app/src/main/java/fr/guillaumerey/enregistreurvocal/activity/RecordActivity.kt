@@ -22,12 +22,10 @@ class RecordActivity : AppCompatActivity() {
         var allPermissions = true
 
         for (permission in permissions) {
-            Log.d("permission",ContextCompat.checkSelfPermission(this, permission).toString())
-            Log.d("permission2",PackageManager.PERMISSION_GRANTED.toString())
+            Log.d("test",permission)
+            Log.d("test2",ContextCompat.checkSelfPermission(this, permission).toString())
             if ((ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED)) {
-                Log.d("test","coucou")
                 if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
-                    Log.d("test2","bonjour")
                     ActivityCompat.requestPermissions(this, permissions, 0)
                 }
                 allPermissions = false
@@ -51,7 +49,7 @@ class RecordActivity : AppCompatActivity() {
         } else {
             MediaRecorder()
         }
-
+        Log.d("test",Environment.getExternalStorageDirectory().absolutePath)
         output = Environment.getExternalStorageDirectory().absolutePath + "/recording.mp3"
 
         val startRec = findViewById<ImageButton>(R.id.start_record_btn)
@@ -60,7 +58,7 @@ class RecordActivity : AppCompatActivity() {
 
         val permissions = arrayOf(
             android.Manifest.permission.RECORD_AUDIO,
-            //android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+            android.Manifest.permission.MANAGE_EXTERNAL_STORAGE
         )
 
         startRec.setOnClickListener {
@@ -106,6 +104,7 @@ class RecordActivity : AppCompatActivity() {
             mediaRecorder.stop()
             mediaRecorder.release()
             state = false
+            Toast.makeText(this, "Record Release", Toast.LENGTH_SHORT).show()
         }else{
             Toast.makeText(this, "You are not recording right now!", Toast.LENGTH_SHORT).show()
         }
