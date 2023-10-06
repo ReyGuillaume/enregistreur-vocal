@@ -12,14 +12,15 @@
         android:minHeight="400dp"
         android:padding="50dp"
         android:src="@drawable/ic_micro"
+        android:contentDescription="Micro"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/recordTimer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
-        android:text="0:08"
+        android:text="00:00"
         android:textAlignment="center"
         android:textSize="25dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
@@ -41,6 +42,7 @@
             android:layout_height="match_parent"
             android:layout_marginHorizontal="25dp"
             android:minWidth="50dp"
+            android:contentDescription="Pause"
             android:src="@drawable/ic_pause" />
 
         <ImageButton
@@ -48,6 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:minWidth="70dp"
+            android:contentDescription="Play"
             android:src="@drawable/ic_play" />
 
         <ImageButton
@@ -56,6 +59,7 @@
             android:layout_height="match_parent"
             android:layout_marginHorizontal="25dp"
             android:minWidth="50dp"
+            android:contentDescription="Stop"
             android:src="@drawable/ic_stop" />
 
     </LinearLayout>

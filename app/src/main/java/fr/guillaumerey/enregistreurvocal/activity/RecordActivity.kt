@@ -1,15 +1,16 @@
 package fr.guillaumerey.enregistreurvocal.activity
 
-import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.MediaRecorder
 import android.os.Build
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.Environment
-import android.util.Log
+import android.provider.Settings
 import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -18,27 +19,36 @@ import java.io.IOException
 
 class RecordActivity : AppCompatActivity() {
 
-    private fun checkPermission(permissions: Array<String>): Boolean {
-        var allPermissions = true
+    private var output: String? = null
+    private lateinit var mediaRecorder: MediaRecorder
+    private var recordingStarted: Boolean = false
+    private var recordingStopped: Boolean = false
+    private lateinit var timer: CountDownTimer
+    private var recordingStartTimeMillis: Long = 0
+    private var recordingPausedTimeMillis: Long = 0
+    private lateinit var timerView: TextView
 
+    private fun askForPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (!Environment.isExternalStorageManager()) {
+                val intent = Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
+                startActivity(intent)
+            }
+        }
+    }
+
+    private fun checkPermission(permissions: Array<String>): Boolean {
+        var res = true
         for (permission in permissions) {
-            Log.d("test",permission)
-            Log.d("test2",ContextCompat.checkSelfPermission(this, permission).toString())
             if ((ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED)) {
                 if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
                     ActivityCompat.requestPermissions(this, permissions, 0)
                 }
-                allPermissions = false
+                res = false
             }
         }
-        return allPermissions
+        return res
     }
-
-    // variables utilisées dans l'enregistrement
-    private var output: String? = null
-    private lateinit var mediaRecorder: MediaRecorder
-    private var state: Boolean = false
-    private var recordingStopped: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,24 +59,19 @@ class RecordActivity : AppCompatActivity() {
         } else {
             MediaRecorder()
         }
-        Log.d("test",Environment.getExternalStorageDirectory().absolutePath)
-        output = Environment.getExternalStorageDirectory().absolutePath + "/recording.mp3"
+
+        output = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).absolutePath + "/temp.mp3"
 
         val startRec = findViewById<ImageButton>(R.id.start_record_btn)
         val pauseRec = findViewById<ImageButton>(R.id.pause_record_btn)
         val stopRec = findViewById<ImageButton>(R.id.stop_record_btn)
+        timerView = findViewById(R.id.recordTimer)
 
-        val permissions = arrayOf(
-            android.Manifest.permission.RECORD_AUDIO,
-            android.Manifest.permission.MANAGE_EXTERNAL_STORAGE
-        )
+        val permissions = arrayOf(android.Manifest.permission.RECORD_AUDIO)
 
         startRec.setOnClickListener {
-            if(checkPermission(permissions)){
-                startRecording()
-            }
-
-
+            askForPermissions()
+            if(checkPermission(permissions)) startRecording()
         }
 
         pauseRec.setOnClickListener {
@@ -80,52 +85,91 @@ class RecordActivity : AppCompatActivity() {
     }
 
     private fun startRecording() {
-        try {
-            Toast.makeText(this, "Recording go!", Toast.LENGTH_SHORT).show()
-            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC)
-            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-            mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_WB)
-            mediaRecorder.setOutputFile(output)
-            mediaRecorder.prepare()
-            mediaRecorder.start()
-            state = true
-            Toast.makeText(this, "Recording started!", Toast.LENGTH_SHORT).show()
-        } catch (e: IllegalStateException) {
-            Toast.makeText(this, "err", Toast.LENGTH_SHORT).show()
-            e.printStackTrace()
-        } catch (e: IOException) {
-            Toast.makeText(this, "err1", Toast.LENGTH_SHORT).show()
-            e.printStackTrace()
+        if(!recordingStarted) {
+            try {
+                // initialise le recorder
+                mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC)
+                mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+                mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_WB)
+                mediaRecorder.setOutputFile(output)
+                mediaRecorder.prepare()
+                mediaRecorder.start()
+                recordingStarted = true
+                recordingStartTimeMillis = System.currentTimeMillis()
+                startTimer()
+            } catch (e: IllegalStateException) {
+                e.printStackTrace()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        } else {
+            resumeRecording()
         }
     }
 
     private fun stopRecording(){
-        if(state){
+        if(recordingStarted){
+            // Arret et enregistrement du fichier audio
             mediaRecorder.stop()
             mediaRecorder.release()
-            state = false
-            Toast.makeText(this, "Record Release", Toast.LENGTH_SHORT).show()
+            timer.cancel()
+            Toast.makeText(this, "Enregistrement terminé", Toast.LENGTH_SHORT).show()
         }else{
-            Toast.makeText(this, "You are not recording right now!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "L'enregistrement n'a pas commencé", Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun pauseRecording() {
-        if(state) {
-            if(!recordingStopped){
-                Toast.makeText(this,"Stopped!", Toast.LENGTH_SHORT).show()
+        if(recordingStarted) {
+            if(recordingStopped) {
+                Toast
+                    .makeText(this, "L'enregistrement est déjà en pause", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                // Enregitrement mis en pause
                 mediaRecorder.pause()
                 recordingStopped = true
-            }else{
-                resumeRecording()
+                recordingPausedTimeMillis = System.currentTimeMillis()
+                Toast
+                    .makeText(this, "L'enregistrement est déjà en pause", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }
 
     private fun resumeRecording() {
-        Toast.makeText(this,"Resume!", Toast.LENGTH_SHORT).show()
-        mediaRecorder.resume()
-        recordingStopped = false
+        if (recordingStopped) {
+            // On relance l'enregistrement
+            mediaRecorder.resume()
+            recordingStopped = false
+            // Maj de recordingStartTimeMillis pour déduire le temps total de la pause
+            recordingStartTimeMillis += System.currentTimeMillis() - recordingPausedTimeMillis
+        } else {
+            Toast
+                .makeText(this, "L'enregistrement est déjà lancé", Toast.LENGTH_SHORT)
+                .show()
+        }
+    }
+
+    private fun startTimer() {
+        timer = object : CountDownTimer(Long.MAX_VALUE, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                if (!recordingStopped) {
+                    // Calcul du temps total de l'enregistrement
+                    val elapsedTimeMillis = System.currentTimeMillis() - recordingStartTimeMillis
+                    val seconds = (elapsedTimeMillis / 1000).toInt()
+                    val minutes = seconds / 60
+                    val remainingSeconds = seconds % 60
+
+                    // Mise à jour TextView
+                    val timeText = String.format("%02d:%02d", minutes, remainingSeconds)
+                    timerView.text = timeText
+                }
+            }
+
+            override fun onFinish() {}
+        }
+        timer.start()
     }
 
 }
