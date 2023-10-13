@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.database.Cursor
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns
+import android.util.Log
 import fr.guillaumerey.enregistreurvocal.model.Record
 
 abstract class DataBaseStorage<T>(private val helper: SQLiteOpenHelper, private val table: String): Storage<T> {
@@ -19,15 +20,22 @@ abstract class DataBaseStorage<T>(private val helper: SQLiteOpenHelper, private 
         return helper.readableDatabase.query(table, null, null, null, null, null,null,null).count
     }
 
-    override fun find(id: Int): T {
-        return cursorToObject(helper.readableDatabase.query(table,null,"${BaseColumns._ID}=${id}",null, null, null,null,null))
+    override fun find(id: Int): T? {
+        var obj: T? = null
+        val cursor = helper.readableDatabase.query(table, null, "${BaseColumns._ID} = ?", arrayOf("$id"), null, null, null, null)
+        if (cursor.moveToNext()){
+            obj = cursorToObject(cursor)
+        }
+        cursor.close()
+        return obj
     }
+
 
     override fun findAll(): List<T> {
         var l : List<T> = emptyList()
 
         var cursor :Cursor = helper.readableDatabase.query(table,null,null,null,null,null,null)
-        if (cursor.moveToFirst()){
+        if (cursor.moveToNext()){
             do {
                 l.toMutableList().add(cursorToObject(cursor))
             } while (cursor.moveToNext())
