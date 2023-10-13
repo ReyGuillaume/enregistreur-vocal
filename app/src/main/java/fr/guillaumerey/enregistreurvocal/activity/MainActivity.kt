@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         // Recycler View
         val list: RecyclerView = findViewById(R.id.audio_list)
-        list.adapter = AudioAdapter()
+        list.adapter = AudioAdapter(this)
 
         // Main button
         val button = findViewById<View>(R.id.start_record)
