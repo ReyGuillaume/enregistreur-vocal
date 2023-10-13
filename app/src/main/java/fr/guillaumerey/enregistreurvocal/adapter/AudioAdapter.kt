@@ -29,12 +29,15 @@ class AudioAdapter(private val context: Context) : RecyclerView.Adapter<AudioAda
     }
 
     private fun timeToString(time:Int?):String{
-        return time.toString()
+        val seconds = (time?.div(1000))
+        val minutes = seconds?.div(60)
+        return String.format("%02d:%02d", minutes,seconds)
     }
 
     override fun onBindViewHolder(holder: AudioHolder, position: Int) {
         Log.d("nomdebug", position.toString())
-        val item = RecordStorage.get(context).find(position)
+        val item = RecordStorage.get(context).find(position+1)
+        Log.d("DEBUGBDD",RecordStorage.get(context).find(position).toString())
         holder.titre.text = item?.name
         holder.dure.text = timeToString(item?.time)
         holder.date.text = item?.date

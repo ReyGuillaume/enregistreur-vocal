@@ -12,4 +12,8 @@ class Record(
         const val DATE = "date"
         const val TIME = "time"
     }
+
+    override fun toString(): String {
+        return "id = ${id},name =${name}, date =${date}, time${time}"
+    }
 }

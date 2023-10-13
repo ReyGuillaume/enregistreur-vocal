@@ -6,7 +6,6 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
@@ -14,8 +13,10 @@ import fr.guillaumerey.enregistreurvocal.R
 import fr.guillaumerey.enregistreurvocal.model.Record
 import fr.guillaumerey.enregistreurvocal.storage.RecordStorage
 import java.io.File
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
-class RegisterDialogFragment(@get:JvmName("getAdapterContext") private val context: Context, private val activity: Activity): DialogFragment() {
+class RegisterDialogFragment(@get:JvmName("getAdapterContext") private val context: Context, private val activity: Activity,private val time: Long): DialogFragment() {
     private lateinit var editText: EditText
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -40,25 +41,23 @@ class RegisterDialogFragment(@get:JvmName("getAdapterContext") private val conte
                             Toast.LENGTH_SHORT
                         ).show()
                     }else{
-
+                        val dateTime = LocalDateTime.now()
+                            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
                         RecordStorage.get(context).insert(Record(
                             0,
                             newFileName,
-                            "2023-10-13",
-                            100000
+                            dateTime,
+                            time.toInt()
                         ))
+                        activity.finish()
                     }
-                    activity.finish()
                 } else {
-                    // Gérer le nom de fichier vide Todo
+                    // Gérer le nom de fichier vide
                     Toast.makeText(requireContext(), "Il faut un nom à votre audio", Toast.LENGTH_SHORT).show()
                     activity.finish()
                 }
             }
-            .setNegativeButton(R.string.annuler_btn) {_, _ ->
-                activity.finish()
-            }
-            .setCancelable(false)
+            .setNegativeButton(R.string.annuler_btn){_,_ -> activity.finish()}
             .create()
     }
 }
