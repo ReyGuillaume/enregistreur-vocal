@@ -33,6 +33,7 @@ class AudioAdapter(private val context: Context) : RecyclerView.Adapter<AudioAda
     }
 
     override fun onBindViewHolder(holder: AudioHolder, position: Int) {
+        Log.d("nomdebug", position.toString())
         val item = RecordStorage.get(context).find(position)
         holder.titre.text = item?.name
         holder.dure.text = timeToString(item?.time)

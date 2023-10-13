@@ -1,10 +1,12 @@
 package fr.guillaumerey.enregistreurvocal.fragment
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
@@ -13,7 +15,7 @@ import fr.guillaumerey.enregistreurvocal.model.Record
 import fr.guillaumerey.enregistreurvocal.storage.RecordStorage
 import java.io.File
 
-class RegisterDialogFragment(@get:JvmName("getAdapterContext") private val context: Context): DialogFragment() {
+class RegisterDialogFragment(@get:JvmName("getAdapterContext") private val context: Context, private val activity: Activity): DialogFragment() {
     private lateinit var editText: EditText
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -46,12 +48,17 @@ class RegisterDialogFragment(@get:JvmName("getAdapterContext") private val conte
                             100000
                         ))
                     }
+                    activity.finish()
                 } else {
-                    // Gérer le nom de fichier vide
+                    // Gérer le nom de fichier vide Todo
                     Toast.makeText(requireContext(), "Il faut un nom à votre audio", Toast.LENGTH_SHORT).show()
+                    activity.finish()
                 }
             }
-            .setNegativeButton(R.string.annuler_btn, null)
+            .setNegativeButton(R.string.annuler_btn) {_, _ ->
+                activity.finish()
+            }
+            .setCancelable(false)
             .create()
     }
 }
