@@ -30,7 +30,7 @@ abstract class DataBaseStorage<T>(private val helper: SQLiteOpenHelper, private 
         if (cursor.moveToFirst()){
             do {
                 l.toMutableList().add(cursorToObject(cursor))
-            }while (cursor.moveToNext())
+            } while (cursor.moveToNext())
         }
         return l
     }
