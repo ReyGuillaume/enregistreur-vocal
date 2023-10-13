@@ -8,6 +8,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import fr.guillaumerey.enregistreurvocal.R
+import fr.guillaumerey.enregistreurvocal.model.Record
 import java.io.File
 
 class RegisterDialogFragment: DialogFragment() {
@@ -29,7 +30,18 @@ class RegisterDialogFragment: DialogFragment() {
                     val newFile = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).absolutePath, newFileName)
                     // On renomme l'ancien fichier temp.mp3
                     if (!file.renameTo(newFile)) {
-                        Toast.makeText(requireContext(), "Une erreur est survenue.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            requireContext(),
+                            "Une erreur est survenue.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }else{
+                        Record(
+                            0,
+                            newFileName,
+                            "2023-10-13",
+                            100000
+                        )
                     }
                 } else {
                     // Gérer le nom de fichier vide
