@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Environment
 import android.provider.Settings
+import android.util.Log
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
@@ -15,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import fr.guillaumerey.enregistreurvocal.R
+import fr.guillaumerey.enregistreurvocal.fragment.RegisterDialogFragment
 import java.io.IOException
 
 class RecordActivity : AppCompatActivity() {
@@ -60,7 +62,7 @@ class RecordActivity : AppCompatActivity() {
             MediaRecorder()
         }
 
-        output = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).absolutePath + "/temp.mp3"
+        output = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).absolutePath + "/.temp.mp3"
 
         val startRec = findViewById<ImageButton>(R.id.start_record_btn)
         val pauseRec = findViewById<ImageButton>(R.id.pause_record_btn)
@@ -113,7 +115,7 @@ class RecordActivity : AppCompatActivity() {
             mediaRecorder.stop()
             mediaRecorder.release()
             timer.cancel()
-            Toast.makeText(this, "Enregistrement terminé", Toast.LENGTH_SHORT).show()
+            RegisterDialogFragment().show(supportFragmentManager, null)
         }else{
             Toast.makeText(this, "L'enregistrement n'a pas commencé", Toast.LENGTH_SHORT).show()
         }
@@ -131,7 +133,7 @@ class RecordActivity : AppCompatActivity() {
                 recordingStopped = true
                 recordingPausedTimeMillis = System.currentTimeMillis()
                 Toast
-                    .makeText(this, "L'enregistrement est déjà en pause", Toast.LENGTH_SHORT)
+                    .makeText(this, "Pause", Toast.LENGTH_SHORT)
                     .show()
             }
         }
@@ -152,7 +154,7 @@ class RecordActivity : AppCompatActivity() {
     }
 
     private fun startTimer() {
-        timer = object : CountDownTimer(Long.MAX_VALUE, 1000) {
+        timer = object : CountDownTimer(Long.MAX_VALUE, 10) {
             override fun onTick(millisUntilFinished: Long) {
                 if (!recordingStopped) {
                     // Calcul du temps total de l'enregistrement
@@ -160,9 +162,11 @@ class RecordActivity : AppCompatActivity() {
                     val seconds = (elapsedTimeMillis / 1000).toInt()
                     val minutes = seconds / 60
                     val remainingSeconds = seconds % 60
+                    val milis = elapsedTimeMillis / 10 % 100
+                    Log.d("test",elapsedTimeMillis.toString())
 
                     // Mise à jour TextView
-                    val timeText = String.format("%02d:%02d", minutes, remainingSeconds)
+                    val timeText = String.format("%02d:%02d:%02d", minutes, remainingSeconds, milis)
                     timerView.text = timeText
                 }
             }
