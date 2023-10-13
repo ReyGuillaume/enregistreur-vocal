@@ -13,7 +13,7 @@ import fr.guillaumerey.enregistreurvocal.model.Record
 import fr.guillaumerey.enregistreurvocal.storage.RecordStorage
 import java.io.File
 
-class RegisterDialogFragment(private val context: Context): DialogFragment() {
+class RegisterDialogFragment(@get:JvmName("getAdapterContext") private val context: Context): DialogFragment() {
     private lateinit var editText: EditText
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

@@ -25,7 +25,7 @@ class AudioAdapter(private val context: Context) : RecyclerView.Adapter<AudioAda
     }
 
     override fun getItemCount(): Int {
-        return RecordStorage.get(context).size();
+        return RecordStorage.get(context).size()
     }
 
     private fun timeToString(time:Int?):String{
@@ -33,15 +33,9 @@ class AudioAdapter(private val context: Context) : RecyclerView.Adapter<AudioAda
     }
 
     override fun onBindViewHolder(holder: AudioHolder, position: Int) {
-        //val item = RecordStorage.get(context).find(position)
-        //holder.titre.text = item?.name
-        //holder.dure.text = timeToString(item?.time)
-        //holder.date.text = item?.date
-        holder.titre.text = "item?.name"
-        holder.dure.text = "timeToString(item?.time)"
-        holder.date.text = "item?.date"
-
+        val item = RecordStorage.get(context).find(position)
+        holder.titre.text = item?.name
+        holder.dure.text = timeToString(item?.time)
+        holder.date.text = item?.date
     }
-
-
 }
