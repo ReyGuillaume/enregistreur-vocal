@@ -2,6 +2,7 @@ package fr.guillaumerey.enregistreurvocal.fragment
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
 import android.os.Environment
 import android.widget.EditText
@@ -9,9 +10,10 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import fr.guillaumerey.enregistreurvocal.R
 import fr.guillaumerey.enregistreurvocal.model.Record
+import fr.guillaumerey.enregistreurvocal.storage.RecordStorage
 import java.io.File
 
-class RegisterDialogFragment: DialogFragment() {
+class RegisterDialogFragment(private val context: Context): DialogFragment() {
     private lateinit var editText: EditText
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -36,12 +38,13 @@ class RegisterDialogFragment: DialogFragment() {
                             Toast.LENGTH_SHORT
                         ).show()
                     }else{
-                        Record(
+
+                        RecordStorage.get(context).insert(Record(
                             0,
                             newFileName,
                             "2023-10-13",
                             100000
-                        )
+                        ))
                     }
                 } else {
                     // Gérer le nom de fichier vide

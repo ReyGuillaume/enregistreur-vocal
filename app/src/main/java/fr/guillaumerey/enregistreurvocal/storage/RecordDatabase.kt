@@ -15,7 +15,7 @@ class RecordDatabase(context: Context) : DataBaseStorage<Record>(DataBaseHelper(
         const val DATE = 2
         const val TIME = 3
     }
-        override fun objectToValues(obj: Record): ContentValues {
+    override fun objectToValues(obj: Record): ContentValues {
             val values = ContentValues()
             values.put(Record.NAME,obj.name)
             values.put(Record.DATE,obj.date)

@@ -116,7 +116,7 @@ class RecordActivity : AppCompatActivity() {
             mediaRecorder.stop()
             mediaRecorder.release()
             timer.cancel()
-            RegisterDialogFragment().show(supportFragmentManager, null)
+            RegisterDialogFragment(this).show(supportFragmentManager, null)
         }else{
             Toast.makeText(this, "L'enregistrement n'a pas commencé", Toast.LENGTH_SHORT).show()
         }

@@ -4,11 +4,12 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns
+import android.util.Log
 import fr.guillaumerey.enregistreurvocal.model.Record
 
 class DataBaseHelper(context: Context) : SQLiteOpenHelper(context,"enregistreurvocal.db",null,1) {
-    override fun onCreate(db: SQLiteDatabase) {
-        db.execSQL(
+    override fun onCreate(db: SQLiteDatabase?) {
+        db?.execSQL(
             "CREATE TABLE Record (" +
                     "${BaseColumns._ID} INTEGER," +
                     "${Record.NAME} TEXT," +
