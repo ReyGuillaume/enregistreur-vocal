@@ -2,6 +2,7 @@ package fr.guillaumerey.enregistreurvocal.adapter
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,15 +28,19 @@ class AudioAdapter(private val context: Context) : RecyclerView.Adapter<AudioAda
         return RecordStorage.get(context).size()
     }
 
-    fun timeToString(time:Int?):String{
+    private fun timeToString(time:Int?):String{
         return time.toString()
     }
 
     override fun onBindViewHolder(holder: AudioHolder, position: Int) {
-        val item = RecordStorage.get(context).find(position)
-        holder.titre.text = item?.name
-        holder.dure.text = timeToString(item?.time)
-        holder.date.text = item?.date
+        //val item = RecordStorage.get(context).find(position)
+        //holder.titre.text = item?.name
+        //holder.dure.text = timeToString(item?.time)
+        //holder.date.text = item?.date
+
+        holder.titre.text = "item?.name"
+        holder.dure.text = "timeToString(item?.time)"
+        holder.date.text = "item?.date"
     }
 
 

@@ -7,7 +7,7 @@ import fr.guillaumerey.enregistreurvocal.helper.DataBaseHelper
 import fr.guillaumerey.enregistreurvocal.model.Record
 import fr.guillaumerey.enregistreurvocal.storage.utility.DataBaseStorage
 
-class RecordDatabase(context: Context) : DataBaseStorage<Record>(DataBaseHelper(context),"record")  {
+class RecordDatabase(context: Context) : DataBaseStorage<Record>(DataBaseHelper(context),"Record")  {
 
     companion object {
         const val ID = 0

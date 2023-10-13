@@ -9,7 +9,7 @@ import fr.guillaumerey.enregistreurvocal.model.Record
 class DataBaseHelper(context: Context) : SQLiteOpenHelper(context,"enregistreurvocal.db",null,1) {
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(
-            "CREATE TABLE Expense (" +
+            "CREATE TABLE Record (" +
                     "${BaseColumns._ID} INTEGER," +
                     "${Record.NAME} TEXT," +
                     "${Record.DATE} DATE," +
