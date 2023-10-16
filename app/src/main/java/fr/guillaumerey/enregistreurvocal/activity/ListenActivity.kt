@@ -17,7 +17,6 @@ class ListenActivity : AppCompatActivity()  {
     private lateinit var mMediaPlayer :MediaPlayer
     private var listeningStarted: Boolean = false
     private var listeningStopped: Boolean = false
-    private val uri : String = "coucou.mp3"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,9 +24,10 @@ class ListenActivity : AppCompatActivity()  {
         val startLis = findViewById<ImageButton>(R.id.start_listen_btn)
         val pauseLis = findViewById<ImageButton>(R.id.pause_listen_btn)
         val stopLis = findViewById<ImageButton>(R.id.stop_listen_btn)
+        val uri = intent.getStringExtra("url")
 
         startLis.setOnClickListener{
-            playSound()
+            playSound(uri)
         }
 
         pauseLis.setOnClickListener{
@@ -39,7 +39,7 @@ class ListenActivity : AppCompatActivity()  {
         }
 
     }
-    fun playSound() {
+    fun playSound(uri : String?) {
         if (!listeningStarted) {
             try{
                 val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).absolutePath + "/"+uri)
@@ -65,7 +65,7 @@ class ListenActivity : AppCompatActivity()  {
     }
 
     fun stopSound() {
-        if (!listeningStarted) {
+        if (listeningStarted) {
             listeningStopped = true
             listeningStarted = false
             mMediaPlayer!!.stop()

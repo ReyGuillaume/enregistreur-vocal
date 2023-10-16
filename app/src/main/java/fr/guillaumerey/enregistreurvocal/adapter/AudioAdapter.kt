@@ -48,6 +48,7 @@ class AudioAdapter(private val context: Context) : RecyclerView.Adapter<AudioAda
             val item = l.get(position)
             holder.button.setOnClickListener {
                 val intent = Intent(context, ListenActivity::class.java)
+                intent.putExtra("url",item.name)
                 context.startActivity(intent)
                 }
             holder.titre.text = item?.name
