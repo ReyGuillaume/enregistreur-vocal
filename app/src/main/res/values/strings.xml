@@ -2,6 +2,8 @@
     <string name="app_name">Enregistreur vocal</string>
     <string name="son">-------------TITRE ---------------</string>
     <string name="title_activity_record">Record activity</string>
+    <string name="title_activity_listen">Listen activity</string>
+    <string name="start_listener">Ecouter</string>
     <string name="start_register">Enregistrer</string>
     <string name="dialog_register_title">Sauvegarder l\'enregistrement</string>
     <string name="sauvegarder_btn">Enregistrer</string>
