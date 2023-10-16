@@ -17,12 +17,26 @@ abstract class DataBaseStorage<T>(private val helper: SQLiteOpenHelper, private 
     }
 
     override fun size(): Int {
-        return helper.readableDatabase.query(table, null, null, null, null, null,null,null).count
+        return helper.readableDatabase.query(table,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null).count
     }
 
     override fun find(id: Int): T? {
         var obj: T? = null
-        val cursor = helper.readableDatabase.query(table, null, "${BaseColumns._ID} = ?", arrayOf("$id"), null, null, null, null)
+        val cursor = helper.readableDatabase.query(table,
+            null,
+            "${BaseColumns._ID} = ?",
+            arrayOf("$id"),
+            null,
+            null,
+            null,
+            null)
         if (cursor.moveToNext()){
             obj = cursorToObject(cursor)
         }
@@ -32,12 +46,17 @@ abstract class DataBaseStorage<T>(private val helper: SQLiteOpenHelper, private 
 
 
     override fun findAll(): List<T> {
-        var l : List<T> = emptyList()
-
-        var cursor :Cursor = helper.readableDatabase.query(table,null,null,null,null,null,null)
-        if (cursor.moveToNext()){
+        var l : MutableList<T> = ArrayList<T>()
+        var cursor :Cursor = helper.readableDatabase.query(table,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null)
+        if (cursor.moveToFirst()){
             do {
-                l.toMutableList().add(cursorToObject(cursor))
+                l.add(cursorToObject(cursor))
             } while (cursor.moveToNext())
         }
         return l

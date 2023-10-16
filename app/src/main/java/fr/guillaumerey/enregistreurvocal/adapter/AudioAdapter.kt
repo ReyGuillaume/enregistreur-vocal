@@ -9,9 +9,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import fr.guillaumerey.enregistreurvocal.R
+import fr.guillaumerey.enregistreurvocal.model.Record
 import fr.guillaumerey.enregistreurvocal.storage.RecordStorage
 
 class AudioAdapter(private val context: Context) : RecyclerView.Adapter<AudioAdapter.AudioHolder>() {
+
+    private lateinit var  l : List<Record>
 
     class AudioHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val titre: TextView = itemView.findViewById(R.id.titre)
@@ -21,6 +24,7 @@ class AudioAdapter(private val context: Context) : RecyclerView.Adapter<AudioAda
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AudioHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_sound, parent,false)
+        l =  RecordStorage.get(context).findAll()
         return AudioHolder(view)
     }
 
@@ -35,11 +39,12 @@ class AudioAdapter(private val context: Context) : RecyclerView.Adapter<AudioAda
     }
 
     override fun onBindViewHolder(holder: AudioHolder, position: Int) {
-        Log.d("nomdebug", position.toString())
-        val item = RecordStorage.get(context).find(position+1)
-        Log.d("DEBUGBDD",RecordStorage.get(context).find(position).toString())
-        holder.titre.text = item?.name
-        holder.dure.text = timeToString(item?.time)
-        holder.date.text = item?.date
+        if (l.isNotEmpty()){
+            val item = l.get(position)
+            holder.titre.text = item?.name
+            holder.dure.text = timeToString(item?.time)
+            holder.date.text = item?.date
+        }
+
     }
 }
