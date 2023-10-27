@@ -4,8 +4,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import fr.guillaumerey.enregistreurvocal.R
 import fr.guillaumerey.enregistreurvocal.adapter.AudioAdapter
 
@@ -22,6 +22,13 @@ class MainActivity : AppCompatActivity() {
         button.setOnClickListener {
             val intent = Intent(applicationContext, RecordActivity::class.java)
             startActivity(intent)
+        }
+
+        // swipe refresh layout
+        val refresh = findViewById<SwipeRefreshLayout>(R.id.refreshLayout)
+        refresh.setOnRefreshListener {
+            list.adapter?.notifyDataSetChanged()
+            refresh.setRefreshing(false)
         }
     }
 }

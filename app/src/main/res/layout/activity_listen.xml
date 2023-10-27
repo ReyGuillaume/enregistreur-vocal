@@ -33,10 +33,10 @@
             android:id="@+id/pause_listen_btn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginHorizontal="25dp"
+            android:layout_marginRight="25dp"
             android:contentDescription="Pause"
-            android:minWidth="50dp"
-            android:src="@drawable/ic_pause" />
+            android:minWidth="70dp"
+            android:background="@drawable/ic_pause" />
 
         <ImageButton
             android:id="@+id/start_listen_btn"
@@ -44,16 +44,7 @@
             android:layout_height="match_parent"
             android:contentDescription="Play"
             android:minWidth="70dp"
-            android:src="@drawable/ic_play" />
-
-        <ImageButton
-            android:id="@+id/stop_listen_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="25dp"
-            android:contentDescription="Stop"
-            android:minWidth="50dp"
-            android:src="@drawable/ic_stop" />
+            android:background="@drawable/ic_play" />
 
     </LinearLayout>
 
