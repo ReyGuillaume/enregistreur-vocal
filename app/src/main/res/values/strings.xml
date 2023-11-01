@@ -8,4 +8,6 @@
     <string name="dialog_register_title">Sauvegarder l\'enregistrement</string>
     <string name="sauvegarder_btn">Enregistrer</string>
     <string name="annuler_btn">Annuler</string>
+    <string name="dialog_update_title">Sauvegarder l\'enregistrement</string>
+    <string name="modifier_btn">Modifier</string>
 </resources>

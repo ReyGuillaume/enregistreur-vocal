@@ -63,10 +63,10 @@ abstract class DataBaseStorage<T>(private val helper: SQLiteOpenHelper, private 
     }
 
     override fun update(id: Int, obj: T) {
-        helper.readableDatabase.update(table,objectToValues(obj),"${BaseColumns._ID}=${id}",null)
+        helper.readableDatabase.update(table,objectToValues(obj),"${BaseColumns._ID}=${id}",arrayOf("$id"))
     }
 
     override fun delete(id: Int) {
-        helper.readableDatabase.delete(table,"${BaseColumns._ID}=${id}",null)
+        helper.readableDatabase.delete(table,"${BaseColumns._ID}=${id}", arrayOf("$id"))
     }
 }
