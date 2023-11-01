@@ -67,6 +67,6 @@ abstract class DataBaseStorage<T>(private val helper: SQLiteOpenHelper, private 
     }
 
     override fun delete(id: Int) {
-        helper.readableDatabase.delete(table,"${BaseColumns._ID}=${id}", arrayOf("$id"))
+        helper.readableDatabase.delete(table,"${BaseColumns._ID}=?", arrayOf("$id"))
     }
 }

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import fr.guillaumerey.enregistreurvocal.R
 import fr.guillaumerey.enregistreurvocal.adapter.AudioAdapter
+import fr.guillaumerey.enregistreurvocal.storage.RecordStorage
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,5 +31,6 @@ class MainActivity : AppCompatActivity() {
             list.adapter?.notifyDataSetChanged()
             refresh.setRefreshing(false)
         }
+
     }
 }

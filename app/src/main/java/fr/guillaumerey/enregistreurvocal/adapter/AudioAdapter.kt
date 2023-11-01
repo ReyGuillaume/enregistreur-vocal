@@ -63,7 +63,6 @@ class AudioAdapter(private val context: Context) : RecyclerView.Adapter<AudioAda
             }
 
             holder.buttonDelete.setOnClickListener{
-
                 val file = File(
                     Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).absolutePath,
                     item.name
