@@ -2,7 +2,7 @@ package fr.guillaumerey.enregistreurvocal.model
 
 class Record(
     val id: Int,
-    val name: String,
+    var name: String,
     val date: String,
     val time: Int
 ) {
@@ -11,6 +11,10 @@ class Record(
         const val NAME = "name"
         const val DATE = "date"
         const val TIME = "time"
+    }
+
+    fun newName(name : String){
+        this.name = name
     }
 
     override fun toString(): String {

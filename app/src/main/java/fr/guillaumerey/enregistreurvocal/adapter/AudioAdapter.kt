@@ -10,17 +10,17 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import fr.guillaumerey.enregistreurvocal.R
 import fr.guillaumerey.enregistreurvocal.activity.ListenActivity
-import fr.guillaumerey.enregistreurvocal.activity.RecordActivity
 import fr.guillaumerey.enregistreurvocal.fragment.UpdateDialogFragment
 import fr.guillaumerey.enregistreurvocal.model.Record
 import fr.guillaumerey.enregistreurvocal.storage.RecordStorage
 import java.io.File
 
 
-class AudioAdapter(private val context: Context) : RecyclerView.Adapter<AudioAdapter.AudioHolder>() {
+class AudioAdapter(private val context: Context, private val manager : FragmentManager)  : RecyclerView.Adapter<AudioAdapter.AudioHolder>() {
 
     private lateinit var  l : List<Record>
 
@@ -33,11 +33,16 @@ class AudioAdapter(private val context: Context) : RecyclerView.Adapter<AudioAda
         val buttonDelete = itemView.findViewById<View>(R.id.delete_sound)
     }
 
+    fun newL(){
+        this.l = RecordStorage.get(context).findAll()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AudioHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_sound, parent,false)
-        l =  RecordStorage.get(context).findAll()
+        this.newL()
         return AudioHolder(view)
     }
+
 
     override fun getItemCount(): Int {
         return RecordStorage.get(context).size()
@@ -59,7 +64,8 @@ class AudioAdapter(private val context: Context) : RecyclerView.Adapter<AudioAda
                 }
 
             holder.buttonUpdate.setOnClickListener{
-                //UpdateDialogFragment(context,item).show(supportFragmentManager,null)
+                UpdateDialogFragment(context,item,this).show(manager,null)
+                this.notifyDataSetChanged()
             }
 
             holder.buttonDelete.setOnClickListener{
@@ -70,6 +76,8 @@ class AudioAdapter(private val context: Context) : RecyclerView.Adapter<AudioAda
 
                 if (file.delete()){
                     RecordStorage.get(context).delete(item.id)
+                    this.newL()
+                    this.notifyDataSetChanged()
                 }
                 Toast.makeText(context, "Delete", Toast.LENGTH_SHORT).show()
             }
@@ -79,4 +87,5 @@ class AudioAdapter(private val context: Context) : RecyclerView.Adapter<AudioAda
         }
 
     }
+
 }

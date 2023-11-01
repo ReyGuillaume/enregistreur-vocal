@@ -8,15 +8,17 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import fr.guillaumerey.enregistreurvocal.R
 import fr.guillaumerey.enregistreurvocal.adapter.AudioAdapter
+import fr.guillaumerey.enregistreurvocal.model.Record
 import fr.guillaumerey.enregistreurvocal.storage.RecordStorage
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var list:RecyclerView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         // Recycler View
-        val list: RecyclerView = findViewById(R.id.audio_list)
-        list.adapter = AudioAdapter(this)
+         list= findViewById(R.id.audio_list)
+        list.adapter = AudioAdapter(this, supportFragmentManager)
 
         // Main button
         val button = findViewById<View>(R.id.start_record)
@@ -31,6 +33,10 @@ class MainActivity : AppCompatActivity() {
             list.adapter?.notifyDataSetChanged()
             refresh.setRefreshing(false)
         }
+    }
 
+    override fun onResume() {
+        super.onResume()
+        list.adapter?.notifyDataSetChanged()
     }
 }

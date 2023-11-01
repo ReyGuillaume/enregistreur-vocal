@@ -5,6 +5,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns
 import android.util.Log
+import android.widget.Toast
 import fr.guillaumerey.enregistreurvocal.model.Record
 
 abstract class DataBaseStorage<T>(private val helper: SQLiteOpenHelper, private val table: String): Storage<T> {
@@ -63,7 +64,7 @@ abstract class DataBaseStorage<T>(private val helper: SQLiteOpenHelper, private 
     }
 
     override fun update(id: Int, obj: T) {
-        helper.readableDatabase.update(table,objectToValues(obj),"${BaseColumns._ID}=${id}",arrayOf("$id"))
+        helper.readableDatabase.update(table,objectToValues(obj),"${BaseColumns._ID}=?",arrayOf("$id"))
     }
 
     override fun delete(id: Int) {
