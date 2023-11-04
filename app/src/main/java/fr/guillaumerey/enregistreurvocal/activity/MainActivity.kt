@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         // Recycler View
-         list= findViewById(R.id.audio_list)
+        list= findViewById(R.id.audio_list)
         list.adapter = AudioAdapter(this, supportFragmentManager)
 
         // Main button
