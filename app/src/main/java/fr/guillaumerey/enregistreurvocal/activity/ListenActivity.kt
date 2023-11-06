@@ -16,6 +16,7 @@ class ListenActivity : AppCompatActivity()  {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listen)
+        title = "Ecouter " + intent.getStringExtra("url")
 
         val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).absolutePath + "/"+intent.getStringExtra("url"))
         val myUri = Uri.fromFile(file)

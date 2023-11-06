@@ -10,4 +10,11 @@
     <string name="annuler_btn">Annuler</string>
     <string name="dialog_update_title">Renommer l\'enregistrement</string>
     <string name="modifier_btn">Modifier</string>
+    <string name="a_propos">A propos</string>
+
+    <!-- INFO ACTIVITY -->
+
+    <string name="app_name_label">Application : </string>
+    <string name="module_label">Module : </string>
+    <string name="contrib_label">Contributeurs : </string>
 </resources>
