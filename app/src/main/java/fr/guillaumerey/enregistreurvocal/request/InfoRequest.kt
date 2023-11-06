@@ -23,10 +23,11 @@ class InfoRequest(private val context: Context) {
             URL,
             null,
             {response ->
+                Log.d("REQUESTBDD","JE SUIS LA")
                 data = response
             },
             {error ->
-                Log.d("err", error.toString())
+                Log.d("ERREUR", error.toString())
             }
         )
         queue.add(request)

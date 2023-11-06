@@ -2,6 +2,7 @@ package fr.guillaumerey.enregistreurvocal.activity
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -18,8 +19,8 @@ class InfoActivity: AppCompatActivity() {
         var req = InfoRequest(this)
 
         findViewById<Button>(R.id.data).setOnClickListener {
-            findViewById<Button>(R.id.app_name).text = req.data.getString("app")
-            findViewById<Button>(R.id.module_name).text = req.data.getString("module")
+            findViewById<TextView>(R.id.app_name).text = req.data.getString("app")
+            findViewById<TextView>(R.id.module_name).text = req.data.getString("module")
         }
     }
 }
